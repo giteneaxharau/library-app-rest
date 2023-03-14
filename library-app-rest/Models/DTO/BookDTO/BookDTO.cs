@@ -1,11 +1,8 @@
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Reflection.Metadata;
 
 namespace library_app_rest.Models;
 
-[Table("Books")]
-public class Book
+public class BookDTO
 {
     [Key]
     public Guid Id { get; set; }
@@ -19,6 +16,6 @@ public class Book
     [Required]
     public string Description { get; set; }
     // public string Image { get; set; }
-    public IList<BookCategory> BooksCategories { get; set; }
+    public List<Category> Categories { get; set; }
 
 }

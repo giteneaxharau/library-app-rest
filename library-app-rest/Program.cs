@@ -1,6 +1,8 @@
 using library_app_rest;
 using library_app_rest.Helpers;
 using library_app_rest.Models;
+using library_app_rest.Repository;
+using library_app_rest.Repository.IRepository;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +14,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultSQLConnection"));
 });
+builder.Services.AddScoped<IBookRepository, BookRepository>();
 builder.Services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<AppDbContext>();
 builder.Services.AddResponseCaching();
 builder.Services.AddControllers(option =>
@@ -20,7 +23,10 @@ builder.Services.AddControllers(option =>
     {
         Duration = 30
     });
-}).AddNewtonsoftJson().AddXmlDataContractSerializerFormatters();
+}).AddNewtonsoftJson(option =>
+{
+    option.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+}).AddXmlDataContractSerializerFormatters();
 builder.Services.AddAutoMapper(typeof(MappingHelper));
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

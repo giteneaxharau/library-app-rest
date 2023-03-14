@@ -8,38 +8,59 @@ namespace library_app_rest.Repository;
 public class Repository<T>: IRepository<T> where T : class
 {
 
-    private readonly AppDbContext db;
-    internal DbSet<T> dbSet;
+    private readonly AppDbContext _db;
+    internal DbSet<T> DbSet;
     
     public Repository(AppDbContext db)
     {
-        this.db = db;
-        this.dbSet = db.Set<T>();
+        _db = db;
+        this.DbSet = db.Set<T>();
     }
 
 
-    public Task<List<T>> GetAll(Expression<Func<T, bool>>? filter = null, int pageSize = 0, int pageNumber = 1)
+    public async Task<List<T>> GetAll(Expression<Func<T, bool>>? filter = null, int pageSize = 0, int pageNumber = 1)
     {
-        throw new NotImplementedException();
+        IQueryable<T> query = DbSet;
+        if (filter != null)
+        {
+            query = query.Where(filter);
+        }
+        if (pageSize > 0)
+        {
+            if(pageSize>100) pageSize = 100;
+            query = query.Skip((pageNumber - 1) * pageSize).Take(pageSize);
+        }
+        return await query.ToListAsync();
     }
 
-    public Task<T> Get(Expression<Func<T, bool>> filter = null, bool tracked = true)
+    public async Task<T> Get(Expression<Func<T, bool>> filter = null, bool tracked = true)
     {
-        throw new NotImplementedException();
+        IQueryable<T> query = DbSet;
+        if (!tracked)
+        {
+            query = query.AsNoTracking();
+        }
+        if (filter != null)
+        {
+            query = query.Where(filter);
+        }
+        return await query.FirstOrDefaultAsync();
     }
 
-    public Task Create(T entity)
+    public async Task Create(T entity)
     {
-        throw new NotImplementedException();
+        await DbSet.AddAsync(entity);
+        await Save();
     }
 
-    public Task Remove(T entity)
+    public async Task Remove(T entity)
     {
-        throw new NotImplementedException();
+        DbSet.Remove(entity);
+        await Save();
     }
 
-    public Task Save()
+    public async Task Save()
     {
-        throw new NotImplementedException();
+        await _db.SaveChangesAsync();
     }
 }
