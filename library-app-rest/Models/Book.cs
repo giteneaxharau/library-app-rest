@@ -19,6 +19,6 @@ public class Book
     [Required]
     public string Description { get; set; }
     // public string Image { get; set; }
-    public IList<BookCategory> BooksCategories { get; set; }
+    public virtual ICollection<Category> Categories { get; set; }
 
 }

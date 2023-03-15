@@ -1,5 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
+using System.Runtime.InteropServices;
 
 namespace library_app_rest.Models;
 
@@ -14,7 +16,9 @@ public class Category
     public string CreatedBy { get; set; }
     [Required]
     public string Name { get; set; }
-    [Required]
+
+    [Required] 
     public int Priority { get; set; }
-    public IList<BookCategory> BooksCategories { get; set; }
+
+    public virtual ICollection<Book>? Books { get; set; } = null!;
 }

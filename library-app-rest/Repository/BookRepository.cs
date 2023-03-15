@@ -1,6 +1,7 @@
 using System.Linq.Expressions;
 using library_app_rest.Helpers;
 using library_app_rest.Models;
+using library_app_rest.Models.DTO.BookDTO;
 using library_app_rest.Repository.IRepository;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,29 +15,59 @@ public class BookRepository : Repository<Book>, IBookRepository
     {
         _db = db;
     }
-
-    public new async Task<List<Book>> GetAll(
-        Expression<Func<Book, bool>>? filter = null,
-        int pageSize = 0,
-        int pageNumber = 1)
+    
+    public new async Task<List<Book>> GetAll(Expression<Func<Book, bool>>? filter = null, int pageSize = 0, int pageNumber = 1,bool? include = true)
     {
-        if (filter != null) _db.Books.Where(filter);
+        IQueryable<Book> query = DbSet;
+        if (filter != null)
+        {
+            query = query.Where(filter);
+        }
         if (pageSize > 0)
         {
-            if (pageSize > 100) pageSize = 100;
-            _db.Books.Skip((pageNumber - 1) * pageSize).Take(pageSize);
+            if(pageSize>100) pageSize = 100;
+            query = query.Skip((pageNumber - 1) * pageSize).Take(pageSize);
         }
 
-        // var books = _db.Books
-            // .Include(b => b.BooksCategories).ThenInclude(bc=>bc.Category)
-            // .ToListAsync();
-        return await _db.Books.ToListAsync();
+        if (include == true) query = query.Include(x => x.Categories);
+        return await query.ToListAsync();
+    }
+    
+    public new async Task<Book> Get(Expression<Func<Book, bool>> filter = null, bool tracked = true, bool? include = true)
+    {
+        IQueryable<Book> query = DbSet;
+        if (!tracked)
+        {
+            query = query.AsNoTracking();
+        }
+        if (filter != null)
+        {
+            query = query.Where(filter);
+        }
+
+        if (include == true) query = query.Include(x => x.Categories);
+        return await query.FirstOrDefaultAsync();
+    }
+
+    public new async Task Create(Book entity)
+    {
+        var selectedCategories = await _db.Categories.Where(x => entity.Categories.Contains(x)).ToListAsync();
+        entity.Categories = selectedCategories;
+        await _db.Books.AddAsync(entity);
+        await _db.SaveChangesAsync();
     }
 
     public async Task<Book> Update(Book entity)
     {
-        entity.UpdatedAt = DateTime.Now;
-        _db.Books.Update(entity);
+        var book = await _db.Books
+            .Include(b => b.Categories)
+            .FirstOrDefaultAsync(b => b.Id == entity.Id);
+        var selectedCategories = await _db.Categories.Where(x => entity.Categories.Contains(x)).ToListAsync();
+        book.Categories = selectedCategories;
+        book.Name = entity.Name;
+        book.Description = entity.Description;
+        book.UpdatedAt = DateTime.Now;
+        _db.Books.Update(book);
         await _db.SaveChangesAsync();
         return entity;
     }

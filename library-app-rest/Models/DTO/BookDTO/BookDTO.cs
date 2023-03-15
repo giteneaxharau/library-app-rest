@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using library_app_rest.Models.DTO.BookDTO;
 
 namespace library_app_rest.Models;
 
@@ -16,6 +17,7 @@ public class BookDTO
     [Required]
     public string Description { get; set; }
     // public string Image { get; set; }
-    public List<Category> Categories { get; set; }
+    [Required]
+    public List<CategoriesBookDTO> Categories { get; set; }
 
 }

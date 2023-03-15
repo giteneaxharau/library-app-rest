@@ -18,7 +18,7 @@ public class Repository<T>: IRepository<T> where T : class
     }
 
 
-    public async Task<List<T>> GetAll(Expression<Func<T, bool>>? filter = null, int pageSize = 0, int pageNumber = 1)
+    public async Task<List<T>> GetAll(Expression<Func<T, bool>>? filter = null, int pageSize = 0, int pageNumber = 1,bool? include = true)
     {
         IQueryable<T> query = DbSet;
         if (filter != null)
@@ -33,7 +33,7 @@ public class Repository<T>: IRepository<T> where T : class
         return await query.ToListAsync();
     }
 
-    public async Task<T> Get(Expression<Func<T, bool>> filter = null, bool tracked = true)
+    public async Task<T> Get(Expression<Func<T, bool>> filter = null, bool tracked = true, bool? include = true)
     {
         IQueryable<T> query = DbSet;
         if (!tracked)

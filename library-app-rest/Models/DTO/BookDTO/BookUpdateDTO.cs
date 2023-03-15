@@ -12,5 +12,5 @@ public class BookUpdateDTO
     public string Description { get; set; }
     // public string Image { get; set; }
     [Required]
-    public List<Category> Categories { get; set; } = new List<Category>();
+    public List<CategoriesBookDTO> Categories { get; set; } = new List<CategoriesBookDTO>();
 }

@@ -15,13 +15,14 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultSQLConnection"));
 });
 builder.Services.AddScoped<IBookRepository, BookRepository>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<AppDbContext>();
 builder.Services.AddResponseCaching();
 builder.Services.AddControllers(option =>
 {
     option.CacheProfiles.Add("Default30", new CacheProfile()
     {
-        Duration = 30
+        Duration = 5
     });
 }).AddNewtonsoftJson(option =>
 {

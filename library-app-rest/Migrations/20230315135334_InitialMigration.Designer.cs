@@ -12,7 +12,7 @@ using library_app_rest.Helpers;
 namespace library_app_rest.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230314121049_InitialMigration")]
+    [Migration("20230315135334_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -24,6 +24,73 @@ namespace library_app_rest.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("BookCategory", b =>
+                {
+                    b.Property<Guid>("BooksId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("CategoriesId")
+                        .HasColumnType("int");
+
+                    b.HasKey("BooksId", "CategoriesId");
+
+                    b.HasIndex("CategoriesId");
+
+                    b.ToTable("BookCategory");
+
+                    b.HasData(
+                        new
+                        {
+                            BooksId = new Guid("95768e9f-7e74-458c-97bb-efda85da2916"),
+                            CategoriesId = 30
+                        },
+                        new
+                        {
+                            BooksId = new Guid("a0403525-7041-4ad9-a8ab-29059ca44d07"),
+                            CategoriesId = 31
+                        },
+                        new
+                        {
+                            BooksId = new Guid("b1d195dc-6dfd-4725-9d70-6e13860cb813"),
+                            CategoriesId = 32
+                        },
+                        new
+                        {
+                            BooksId = new Guid("7e73225b-7219-45cf-8261-fe7d2766da34"),
+                            CategoriesId = 33
+                        },
+                        new
+                        {
+                            BooksId = new Guid("1ed049d1-43c4-42b7-ab47-6557c804c073"),
+                            CategoriesId = 34
+                        },
+                        new
+                        {
+                            BooksId = new Guid("9769a4d9-cb29-473a-bb4a-0d59aafff64c"),
+                            CategoriesId = 35
+                        },
+                        new
+                        {
+                            BooksId = new Guid("06a2e46d-5b40-45cc-8fdf-a95a0cd93fa6"),
+                            CategoriesId = 36
+                        },
+                        new
+                        {
+                            BooksId = new Guid("92599c37-9cae-4970-89ed-23bf95e17b05"),
+                            CategoriesId = 37
+                        },
+                        new
+                        {
+                            BooksId = new Guid("71a40ee1-016d-48b3-8dc8-ff2e6261b3ae"),
+                            CategoriesId = 38
+                        },
+                        new
+                        {
+                            BooksId = new Guid("4bae9d47-1f64-4188-80b1-c590cb286344"),
+                            CategoriesId = 39
+                        });
+                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -189,160 +256,93 @@ namespace library_app_rest.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("f36d1aea-a95c-466a-8dd2-2db51d4d5011"),
-                            CreatedAt = new DateTime(2023, 3, 14, 13, 10, 49, 690, DateTimeKind.Local).AddTicks(6255),
-                            CreatedBy = "Courtney Sawayn",
-                            Description = "Accusamus iure quidem consequatur repellendus in et porro minus.",
-                            Name = "Sleek Soft Towels",
+                            Id = new Guid("95768e9f-7e74-458c-97bb-efda85da2916"),
+                            CreatedAt = new DateTime(2023, 3, 15, 14, 53, 34, 294, DateTimeKind.Local).AddTicks(665),
+                            CreatedBy = "Myrtice Nitzsche",
+                            Description = "Culpa amet totam in magnam sit voluptas.",
+                            Name = "Licensed Soft Chips",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
-                            Id = new Guid("eaa16645-7f36-4040-a60e-57410dcfcaca"),
-                            CreatedAt = new DateTime(2023, 3, 14, 13, 10, 49, 690, DateTimeKind.Local).AddTicks(7257),
-                            CreatedBy = "Garland Will",
-                            Description = "Ratione fuga voluptatem beatae voluptas dolores aut temporibus.",
-                            Name = "Licensed Fresh Soap",
+                            Id = new Guid("a0403525-7041-4ad9-a8ab-29059ca44d07"),
+                            CreatedAt = new DateTime(2023, 3, 15, 14, 53, 34, 294, DateTimeKind.Local).AddTicks(1819),
+                            CreatedBy = "Isabelle Erdman",
+                            Description = "Earum veritatis impedit dolorem dolores voluptatem iste qui.",
+                            Name = "Ergonomic Soft Table",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
-                            Id = new Guid("ca3e2962-eec9-4c46-ba53-dfd9c82535cc"),
-                            CreatedAt = new DateTime(2023, 3, 14, 13, 10, 49, 690, DateTimeKind.Local).AddTicks(7333),
-                            CreatedBy = "Reagan Bailey",
-                            Description = "Qui explicabo omnis omnis modi.",
-                            Name = "Practical Metal Cheese",
+                            Id = new Guid("b1d195dc-6dfd-4725-9d70-6e13860cb813"),
+                            CreatedAt = new DateTime(2023, 3, 15, 14, 53, 34, 294, DateTimeKind.Local).AddTicks(1898),
+                            CreatedBy = "Pascale Considine",
+                            Description = "Cupiditate voluptate enim atque.",
+                            Name = "Licensed Fresh Chips",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
-                            Id = new Guid("01288c4d-8755-4783-a80d-23467ed6ab0b"),
-                            CreatedAt = new DateTime(2023, 3, 14, 13, 10, 49, 690, DateTimeKind.Local).AddTicks(7484),
-                            CreatedBy = "Mike Ziemann",
-                            Description = "Aut minima recusandae ea amet dolorum natus sit deleniti.",
-                            Name = "Awesome Fresh Chair",
+                            Id = new Guid("7e73225b-7219-45cf-8261-fe7d2766da34"),
+                            CreatedAt = new DateTime(2023, 3, 15, 14, 53, 34, 294, DateTimeKind.Local).AddTicks(1942),
+                            CreatedBy = "Vanessa Dickens",
+                            Description = "Iste iste repellat.",
+                            Name = "Generic Granite Hat",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
-                            Id = new Guid("15e9e105-907f-4bb9-a70a-46cbe1c829fa"),
-                            CreatedAt = new DateTime(2023, 3, 14, 13, 10, 49, 690, DateTimeKind.Local).AddTicks(7551),
-                            CreatedBy = "Orie Harber",
-                            Description = "Similique vitae ut aut qui voluptatibus nihil saepe.",
-                            Name = "Intelligent Concrete Gloves",
+                            Id = new Guid("1ed049d1-43c4-42b7-ab47-6557c804c073"),
+                            CreatedAt = new DateTime(2023, 3, 15, 14, 53, 34, 294, DateTimeKind.Local).AddTicks(1981),
+                            CreatedBy = "Vincenza Harber",
+                            Description = "Rem cupiditate et non et dolorem.",
+                            Name = "Unbranded Concrete Computer",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
-                            Id = new Guid("d6400fea-09a7-45e5-abd3-b878ba4dafb6"),
-                            CreatedAt = new DateTime(2023, 3, 14, 13, 10, 49, 690, DateTimeKind.Local).AddTicks(7605),
-                            CreatedBy = "Dock Larkin",
-                            Description = "Omnis totam placeat maxime.",
-                            Name = "Fantastic Soft Ball",
+                            Id = new Guid("9769a4d9-cb29-473a-bb4a-0d59aafff64c"),
+                            CreatedAt = new DateTime(2023, 3, 15, 14, 53, 34, 294, DateTimeKind.Local).AddTicks(2133),
+                            CreatedBy = "Dena Jenkins",
+                            Description = "Doloremque quam eum at.",
+                            Name = "Refined Steel Chair",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
-                            Id = new Guid("aa745f3f-2f1c-447e-b147-c20752051ff1"),
-                            CreatedAt = new DateTime(2023, 3, 14, 13, 10, 49, 690, DateTimeKind.Local).AddTicks(7653),
-                            CreatedBy = "Gregg Stokes",
-                            Description = "Ab aut quam.",
-                            Name = "Practical Rubber Salad",
+                            Id = new Guid("06a2e46d-5b40-45cc-8fdf-a95a0cd93fa6"),
+                            CreatedAt = new DateTime(2023, 3, 15, 14, 53, 34, 294, DateTimeKind.Local).AddTicks(2179),
+                            CreatedBy = "Rosa Von",
+                            Description = "Id temporibus voluptatem sunt.",
+                            Name = "Rustic Steel Cheese",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
-                            Id = new Guid("e4e253ab-b717-48ab-bf24-637d1ce1bcac"),
-                            CreatedAt = new DateTime(2023, 3, 14, 13, 10, 49, 690, DateTimeKind.Local).AddTicks(7693),
-                            CreatedBy = "Gilberto Little",
-                            Description = "Et voluptas asperiores nobis molestias.",
-                            Name = "Awesome Fresh Gloves",
+                            Id = new Guid("92599c37-9cae-4970-89ed-23bf95e17b05"),
+                            CreatedAt = new DateTime(2023, 3, 15, 14, 53, 34, 294, DateTimeKind.Local).AddTicks(2222),
+                            CreatedBy = "Kade Crist",
+                            Description = "Voluptatem recusandae laboriosam voluptate.",
+                            Name = "Awesome Plastic Chair",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
-                            Id = new Guid("cf3a13ba-6455-452e-b878-8672a66785cc"),
-                            CreatedAt = new DateTime(2023, 3, 14, 13, 10, 49, 690, DateTimeKind.Local).AddTicks(7759),
-                            CreatedBy = "Madisen Dickens",
-                            Description = "Aperiam libero impedit eaque reprehenderit corporis enim.",
-                            Name = "Refined Wooden Salad",
+                            Id = new Guid("71a40ee1-016d-48b3-8dc8-ff2e6261b3ae"),
+                            CreatedAt = new DateTime(2023, 3, 15, 14, 53, 34, 294, DateTimeKind.Local).AddTicks(2262),
+                            CreatedBy = "Kacey Greenfelder",
+                            Description = "Illo eaque id sint eos est aut.",
+                            Name = "Refined Cotton Keyboard",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
-                            Id = new Guid("823a980a-86a4-439d-9f64-8a4e564a0946"),
-                            CreatedAt = new DateTime(2023, 3, 14, 13, 10, 49, 690, DateTimeKind.Local).AddTicks(7859),
-                            CreatedBy = "Kaylee Kilback",
-                            Description = "Aliquam dicta laborum accusamus sit expedita quis eum.",
-                            Name = "Fantastic Plastic Shoes",
+                            Id = new Guid("4bae9d47-1f64-4188-80b1-c590cb286344"),
+                            CreatedAt = new DateTime(2023, 3, 15, 14, 53, 34, 294, DateTimeKind.Local).AddTicks(2312),
+                            CreatedBy = "Arielle Hane",
+                            Description = "Maiores voluptatem eum ex pariatur aliquam facere aut inventore aperiam.",
+                            Name = "Unbranded Cotton Chips",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        });
-                });
-
-            modelBuilder.Entity("library_app_rest.Models.BookCategory", b =>
-                {
-                    b.Property<Guid>("BookId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int");
-
-                    b.HasKey("BookId", "CategoryId");
-
-                    b.HasIndex("CategoryId");
-
-                    b.ToTable("BooksCategories");
-
-                    b.HasData(
-                        new
-                        {
-                            BookId = new Guid("f36d1aea-a95c-466a-8dd2-2db51d4d5011"),
-                            CategoryId = 30
-                        },
-                        new
-                        {
-                            BookId = new Guid("eaa16645-7f36-4040-a60e-57410dcfcaca"),
-                            CategoryId = 31
-                        },
-                        new
-                        {
-                            BookId = new Guid("ca3e2962-eec9-4c46-ba53-dfd9c82535cc"),
-                            CategoryId = 32
-                        },
-                        new
-                        {
-                            BookId = new Guid("01288c4d-8755-4783-a80d-23467ed6ab0b"),
-                            CategoryId = 33
-                        },
-                        new
-                        {
-                            BookId = new Guid("15e9e105-907f-4bb9-a70a-46cbe1c829fa"),
-                            CategoryId = 34
-                        },
-                        new
-                        {
-                            BookId = new Guid("d6400fea-09a7-45e5-abd3-b878ba4dafb6"),
-                            CategoryId = 35
-                        },
-                        new
-                        {
-                            BookId = new Guid("aa745f3f-2f1c-447e-b147-c20752051ff1"),
-                            CategoryId = 36
-                        },
-                        new
-                        {
-                            BookId = new Guid("e4e253ab-b717-48ab-bf24-637d1ce1bcac"),
-                            CategoryId = 37
-                        },
-                        new
-                        {
-                            BookId = new Guid("cf3a13ba-6455-452e-b878-8672a66785cc"),
-                            CategoryId = 38
-                        },
-                        new
-                        {
-                            BookId = new Guid("823a980a-86a4-439d-9f64-8a4e564a0946"),
-                            CategoryId = 39
                         });
                 });
 
@@ -379,91 +379,91 @@ namespace library_app_rest.Migrations
                         new
                         {
                             Id = 30,
-                            CreatedAt = new DateTime(2023, 3, 14, 13, 10, 49, 690, DateTimeKind.Local).AddTicks(8049),
-                            CreatedBy = "Kory Balistreri",
-                            Name = "Tools",
-                            Priority = 5,
+                            CreatedAt = new DateTime(2023, 3, 15, 14, 53, 34, 294, DateTimeKind.Local).AddTicks(2478),
+                            CreatedBy = "Alda Hermiston",
+                            Name = "Industrial",
+                            Priority = 9,
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 31,
-                            CreatedAt = new DateTime(2023, 3, 14, 13, 10, 49, 690, DateTimeKind.Local).AddTicks(8904),
-                            CreatedBy = "Royal Medhurst",
-                            Name = "Movies",
-                            Priority = 9,
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 32,
-                            CreatedAt = new DateTime(2023, 3, 14, 13, 10, 49, 690, DateTimeKind.Local).AddTicks(8929),
-                            CreatedBy = "Nathaniel Steuber",
-                            Name = "Outdoors",
-                            Priority = 9,
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 33,
-                            CreatedAt = new DateTime(2023, 3, 14, 13, 10, 49, 690, DateTimeKind.Local).AddTicks(8950),
-                            CreatedBy = "Shyann Runte",
-                            Name = "Computers",
-                            Priority = 5,
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 34,
-                            CreatedAt = new DateTime(2023, 3, 14, 13, 10, 49, 690, DateTimeKind.Local).AddTicks(8963),
-                            CreatedBy = "Garland Hansen",
-                            Name = "Automotive",
-                            Priority = 4,
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 35,
-                            CreatedAt = new DateTime(2023, 3, 14, 13, 10, 49, 690, DateTimeKind.Local).AddTicks(8979),
-                            CreatedBy = "Zackery Greenfelder",
-                            Name = "Home",
+                            CreatedAt = new DateTime(2023, 3, 15, 14, 53, 34, 294, DateTimeKind.Local).AddTicks(3160),
+                            CreatedBy = "General McLaughlin",
+                            Name = "Games",
                             Priority = 8,
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
+                            Id = 32,
+                            CreatedAt = new DateTime(2023, 3, 15, 14, 53, 34, 294, DateTimeKind.Local).AddTicks(3188),
+                            CreatedBy = "Whitney Zieme",
+                            Name = "Kids",
+                            Priority = 7,
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 33,
+                            CreatedAt = new DateTime(2023, 3, 15, 14, 53, 34, 294, DateTimeKind.Local).AddTicks(3204),
+                            CreatedBy = "Abelardo Nikolaus",
+                            Name = "Industrial",
+                            Priority = 8,
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 34,
+                            CreatedAt = new DateTime(2023, 3, 15, 14, 53, 34, 294, DateTimeKind.Local).AddTicks(3218),
+                            CreatedBy = "Eddie Wyman",
+                            Name = "Grocery",
+                            Priority = 7,
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 35,
+                            CreatedAt = new DateTime(2023, 3, 15, 14, 53, 34, 294, DateTimeKind.Local).AddTicks(3232),
+                            CreatedBy = "Maudie Kuhic",
+                            Name = "Industrial",
+                            Priority = 3,
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
                             Id = 36,
-                            CreatedAt = new DateTime(2023, 3, 14, 13, 10, 49, 690, DateTimeKind.Local).AddTicks(8997),
-                            CreatedBy = "Marta Hyatt",
-                            Name = "Games",
-                            Priority = 4,
+                            CreatedAt = new DateTime(2023, 3, 15, 14, 53, 34, 294, DateTimeKind.Local).AddTicks(3246),
+                            CreatedBy = "Kristin Kunze",
+                            Name = "Tools",
+                            Priority = 6,
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 37,
-                            CreatedAt = new DateTime(2023, 3, 14, 13, 10, 49, 690, DateTimeKind.Local).AddTicks(9012),
-                            CreatedBy = "Maci Herman",
-                            Name = "Computers",
-                            Priority = 2,
+                            CreatedAt = new DateTime(2023, 3, 15, 14, 53, 34, 294, DateTimeKind.Local).AddTicks(3265),
+                            CreatedBy = "Wendell Hyatt",
+                            Name = "Industrial",
+                            Priority = 4,
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 38,
-                            CreatedAt = new DateTime(2023, 3, 14, 13, 10, 49, 690, DateTimeKind.Local).AddTicks(9028),
-                            CreatedBy = "Lexie Bechtelar",
-                            Name = "Computers",
-                            Priority = 10,
+                            CreatedAt = new DateTime(2023, 3, 15, 14, 53, 34, 294, DateTimeKind.Local).AddTicks(3277),
+                            CreatedBy = "Mike Reichel",
+                            Name = "Health",
+                            Priority = 5,
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 39,
-                            CreatedAt = new DateTime(2023, 3, 14, 13, 10, 49, 690, DateTimeKind.Local).AddTicks(9042),
-                            CreatedBy = "Salma Beer",
-                            Name = "Games",
-                            Priority = 7,
+                            CreatedAt = new DateTime(2023, 3, 15, 14, 53, 34, 294, DateTimeKind.Local).AddTicks(3327),
+                            CreatedBy = "Evie Lueilwitz",
+                            Name = "Beauty",
+                            Priority = 1,
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
@@ -551,6 +551,21 @@ namespace library_app_rest.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("BookCategory", b =>
+                {
+                    b.HasOne("library_app_rest.Models.Book", null)
+                        .WithMany()
+                        .HasForeignKey("BooksId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("library_app_rest.Models.Category", null)
+                        .WithMany()
+                        .HasForeignKey("CategoriesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -600,35 +615,6 @@ namespace library_app_rest.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("library_app_rest.Models.BookCategory", b =>
-                {
-                    b.HasOne("library_app_rest.Models.Book", "Book")
-                        .WithMany("BooksCategories")
-                        .HasForeignKey("BookId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("library_app_rest.Models.Category", "Category")
-                        .WithMany("BooksCategories")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Book");
-
-                    b.Navigation("Category");
-                });
-
-            modelBuilder.Entity("library_app_rest.Models.Book", b =>
-                {
-                    b.Navigation("BooksCategories");
-                });
-
-            modelBuilder.Entity("library_app_rest.Models.Category", b =>
-                {
-                    b.Navigation("BooksCategories");
                 });
 #pragma warning restore 612, 618
         }
