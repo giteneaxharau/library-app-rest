@@ -4,12 +4,14 @@ using AutoMapper;
 using library_app_rest.Models;
 using library_app_rest.Models.DTO.CategoryDTO;
 using library_app_rest.Repository.IRepository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace library_app_rest.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/v{version:apiVersion}/[controller]")]
+[ApiVersion("1.0")]
 public class CategoriesController : ControllerBase
 {
     protected Response _response;
@@ -87,6 +89,7 @@ public class CategoriesController : ControllerBase
         return _response;
     }
     [HttpPost(Name = "CreateCategory")]
+    [Authorize(Roles = "Admin")]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -133,6 +136,7 @@ public class CategoriesController : ControllerBase
     }
     
     [HttpDelete("{id:int}", Name = "DeleteCategory")]
+    [Authorize(Roles = "Admin")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -171,6 +175,7 @@ public class CategoriesController : ControllerBase
     }
     
     [HttpPut("{id:int}", Name = "UpdateCategory")]
+    [Authorize(Roles = "Admin")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]

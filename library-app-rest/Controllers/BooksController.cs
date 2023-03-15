@@ -4,12 +4,14 @@ using AutoMapper;
 using library_app_rest.Models;
 using library_app_rest.Models.DTO.BookDTO;
 using library_app_rest.Repository.IRepository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace library_app_rest.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/v{version:apiVersion}/[controller]")]
+[ApiVersion("1.0")]
 public class BooksController : ControllerBase
 {
     protected Response _response;
@@ -88,6 +90,7 @@ public class BooksController : ControllerBase
     }
 
     [HttpPost(Name = "CreateBook")]
+    [Authorize(Roles = "Admin,Author")]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -142,6 +145,7 @@ public class BooksController : ControllerBase
     }
 
     [HttpDelete("{id:guid}", Name = "DeleteBook")]
+    [Authorize(Roles = "Admin")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -181,6 +185,7 @@ public class BooksController : ControllerBase
     }
 
     [HttpPut("{id:guid}", Name = "UpdateBook")]
+    [Authorize(Roles = "Admin")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]

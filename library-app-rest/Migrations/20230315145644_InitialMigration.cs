@@ -34,9 +34,6 @@ namespace library_app_rest.Migrations
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Bio = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -225,16 +222,16 @@ namespace library_app_rest.Migrations
                 columns: new[] { "Id", "CreatedAt", "CreatedBy", "Description", "Name", "UpdatedAt" },
                 values: new object[,]
                 {
-                    { new Guid("06a2e46d-5b40-45cc-8fdf-a95a0cd93fa6"), new DateTime(2023, 3, 15, 14, 53, 34, 294, DateTimeKind.Local).AddTicks(2179), "Rosa Von", "Id temporibus voluptatem sunt.", "Rustic Steel Cheese", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { new Guid("1ed049d1-43c4-42b7-ab47-6557c804c073"), new DateTime(2023, 3, 15, 14, 53, 34, 294, DateTimeKind.Local).AddTicks(1981), "Vincenza Harber", "Rem cupiditate et non et dolorem.", "Unbranded Concrete Computer", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { new Guid("4bae9d47-1f64-4188-80b1-c590cb286344"), new DateTime(2023, 3, 15, 14, 53, 34, 294, DateTimeKind.Local).AddTicks(2312), "Arielle Hane", "Maiores voluptatem eum ex pariatur aliquam facere aut inventore aperiam.", "Unbranded Cotton Chips", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { new Guid("71a40ee1-016d-48b3-8dc8-ff2e6261b3ae"), new DateTime(2023, 3, 15, 14, 53, 34, 294, DateTimeKind.Local).AddTicks(2262), "Kacey Greenfelder", "Illo eaque id sint eos est aut.", "Refined Cotton Keyboard", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { new Guid("7e73225b-7219-45cf-8261-fe7d2766da34"), new DateTime(2023, 3, 15, 14, 53, 34, 294, DateTimeKind.Local).AddTicks(1942), "Vanessa Dickens", "Iste iste repellat.", "Generic Granite Hat", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { new Guid("92599c37-9cae-4970-89ed-23bf95e17b05"), new DateTime(2023, 3, 15, 14, 53, 34, 294, DateTimeKind.Local).AddTicks(2222), "Kade Crist", "Voluptatem recusandae laboriosam voluptate.", "Awesome Plastic Chair", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { new Guid("95768e9f-7e74-458c-97bb-efda85da2916"), new DateTime(2023, 3, 15, 14, 53, 34, 294, DateTimeKind.Local).AddTicks(665), "Myrtice Nitzsche", "Culpa amet totam in magnam sit voluptas.", "Licensed Soft Chips", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { new Guid("9769a4d9-cb29-473a-bb4a-0d59aafff64c"), new DateTime(2023, 3, 15, 14, 53, 34, 294, DateTimeKind.Local).AddTicks(2133), "Dena Jenkins", "Doloremque quam eum at.", "Refined Steel Chair", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { new Guid("a0403525-7041-4ad9-a8ab-29059ca44d07"), new DateTime(2023, 3, 15, 14, 53, 34, 294, DateTimeKind.Local).AddTicks(1819), "Isabelle Erdman", "Earum veritatis impedit dolorem dolores voluptatem iste qui.", "Ergonomic Soft Table", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { new Guid("b1d195dc-6dfd-4725-9d70-6e13860cb813"), new DateTime(2023, 3, 15, 14, 53, 34, 294, DateTimeKind.Local).AddTicks(1898), "Pascale Considine", "Cupiditate voluptate enim atque.", "Licensed Fresh Chips", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
+                    { new Guid("0ddac854-f77a-4d88-a1c3-90cac09406d7"), new DateTime(2023, 3, 15, 15, 56, 44, 272, DateTimeKind.Local).AddTicks(1142), "Christy Reynolds", "Dolorem ea laborum dolor voluptatem soluta deserunt non voluptatem quo.", "Generic Cotton Bike", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { new Guid("1ff28426-38f8-43d7-9b8f-0bbc91c3c15d"), new DateTime(2023, 3, 15, 15, 56, 44, 272, DateTimeKind.Local).AddTicks(870), "Pascale Aufderhar", "Aut veritatis quibusdam.", "Sleek Concrete Hat", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { new Guid("241a88d4-3fcd-4915-afdb-8f9747f15277"), new DateTime(2023, 3, 15, 15, 56, 44, 272, DateTimeKind.Local).AddTicks(915), "Sonny Conn", "Aut odio qui perferendis inventore non vel architecto rem.", "Refined Frozen Mouse", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { new Guid("4872aa25-ae9a-4d95-b506-7fd6f6d9b177"), new DateTime(2023, 3, 15, 15, 56, 44, 271, DateTimeKind.Local).AddTicks(9751), "Hailee Becker", "Eum molestias aliquid.", "Licensed Steel Cheese", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { new Guid("59caa319-0f00-4c4c-8748-8aaea82b4f80"), new DateTime(2023, 3, 15, 15, 56, 44, 272, DateTimeKind.Local).AddTicks(978), "Emelie Effertz", "Et minima est ut id incidunt vitae vero eos.", "Refined Steel Shirt", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { new Guid("8399df5d-3ad1-40bd-b500-c6c4cffbf2b8"), new DateTime(2023, 3, 15, 15, 56, 44, 272, DateTimeKind.Local).AddTicks(752), "Brooklyn Rosenbaum", "Eum placeat cumque.", "Incredible Cotton Sausages", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { new Guid("9b9a343c-7039-4a47-aea3-61b1943146ad"), new DateTime(2023, 3, 15, 15, 56, 44, 272, DateTimeKind.Local).AddTicks(1099), "Gerson Balistreri", "Est non ut itaque provident.", "Licensed Frozen Chicken", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { new Guid("d2a41262-df58-420f-ab4a-79911de5b831"), new DateTime(2023, 3, 15, 15, 56, 44, 272, DateTimeKind.Local).AddTicks(816), "Verda Hoppe", "Nemo aliquam et quas natus quia et.", "Gorgeous Fresh Cheese", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { new Guid("db7dad26-3b8e-446a-b913-d7d3755f2b2a"), new DateTime(2023, 3, 15, 15, 56, 44, 272, DateTimeKind.Local).AddTicks(1061), "Salma Sporer", "Voluptatem aut eaque.", "Handmade Granite Sausages", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { new Guid("e49c6b04-e861-482d-b37e-e02c3d302b3e"), new DateTime(2023, 3, 15, 15, 56, 44, 272, DateTimeKind.Local).AddTicks(1196), "Annabelle Keebler", "Qui sequi architecto aut quibusdam recusandae fugiat.", "Intelligent Concrete Pants", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
                 });
 
             migrationBuilder.InsertData(
@@ -242,16 +239,16 @@ namespace library_app_rest.Migrations
                 columns: new[] { "Id", "CreatedAt", "CreatedBy", "Name", "Priority", "UpdatedAt" },
                 values: new object[,]
                 {
-                    { 30, new DateTime(2023, 3, 15, 14, 53, 34, 294, DateTimeKind.Local).AddTicks(2478), "Alda Hermiston", "Industrial", 9, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 31, new DateTime(2023, 3, 15, 14, 53, 34, 294, DateTimeKind.Local).AddTicks(3160), "General McLaughlin", "Games", 8, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 32, new DateTime(2023, 3, 15, 14, 53, 34, 294, DateTimeKind.Local).AddTicks(3188), "Whitney Zieme", "Kids", 7, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 33, new DateTime(2023, 3, 15, 14, 53, 34, 294, DateTimeKind.Local).AddTicks(3204), "Abelardo Nikolaus", "Industrial", 8, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 34, new DateTime(2023, 3, 15, 14, 53, 34, 294, DateTimeKind.Local).AddTicks(3218), "Eddie Wyman", "Grocery", 7, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 35, new DateTime(2023, 3, 15, 14, 53, 34, 294, DateTimeKind.Local).AddTicks(3232), "Maudie Kuhic", "Industrial", 3, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 36, new DateTime(2023, 3, 15, 14, 53, 34, 294, DateTimeKind.Local).AddTicks(3246), "Kristin Kunze", "Tools", 6, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 37, new DateTime(2023, 3, 15, 14, 53, 34, 294, DateTimeKind.Local).AddTicks(3265), "Wendell Hyatt", "Industrial", 4, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 38, new DateTime(2023, 3, 15, 14, 53, 34, 294, DateTimeKind.Local).AddTicks(3277), "Mike Reichel", "Health", 5, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 39, new DateTime(2023, 3, 15, 14, 53, 34, 294, DateTimeKind.Local).AddTicks(3327), "Evie Lueilwitz", "Beauty", 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
+                    { 30, new DateTime(2023, 3, 15, 15, 56, 44, 272, DateTimeKind.Local).AddTicks(1365), "Federico Lemke", "Health", 10, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 31, new DateTime(2023, 3, 15, 15, 56, 44, 272, DateTimeKind.Local).AddTicks(1995), "Araceli Hackett", "Industrial", 5, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 32, new DateTime(2023, 3, 15, 15, 56, 44, 272, DateTimeKind.Local).AddTicks(2020), "Macey Kreiger", "Computers", 6, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 33, new DateTime(2023, 3, 15, 15, 56, 44, 272, DateTimeKind.Local).AddTicks(2036), "Holden Torphy", "Health", 2, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 34, new DateTime(2023, 3, 15, 15, 56, 44, 272, DateTimeKind.Local).AddTicks(2051), "Mabel Wilkinson", "Movies", 2, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 35, new DateTime(2023, 3, 15, 15, 56, 44, 272, DateTimeKind.Local).AddTicks(2068), "Iva Skiles", "Shoes", 5, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 36, new DateTime(2023, 3, 15, 15, 56, 44, 272, DateTimeKind.Local).AddTicks(2081), "Madonna Collier", "Baby", 3, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 37, new DateTime(2023, 3, 15, 15, 56, 44, 272, DateTimeKind.Local).AddTicks(2099), "Keanu Rosenbaum", "Clothing", 6, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 38, new DateTime(2023, 3, 15, 15, 56, 44, 272, DateTimeKind.Local).AddTicks(2113), "Chad Casper", "Kids", 9, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 39, new DateTime(2023, 3, 15, 15, 56, 44, 272, DateTimeKind.Local).AddTicks(2127), "Lincoln Huels", "Electronics", 5, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
                 });
 
             migrationBuilder.InsertData(
@@ -259,16 +256,16 @@ namespace library_app_rest.Migrations
                 columns: new[] { "BooksId", "CategoriesId" },
                 values: new object[,]
                 {
-                    { new Guid("06a2e46d-5b40-45cc-8fdf-a95a0cd93fa6"), 36 },
-                    { new Guid("1ed049d1-43c4-42b7-ab47-6557c804c073"), 34 },
-                    { new Guid("4bae9d47-1f64-4188-80b1-c590cb286344"), 39 },
-                    { new Guid("71a40ee1-016d-48b3-8dc8-ff2e6261b3ae"), 38 },
-                    { new Guid("7e73225b-7219-45cf-8261-fe7d2766da34"), 33 },
-                    { new Guid("92599c37-9cae-4970-89ed-23bf95e17b05"), 37 },
-                    { new Guid("95768e9f-7e74-458c-97bb-efda85da2916"), 30 },
-                    { new Guid("9769a4d9-cb29-473a-bb4a-0d59aafff64c"), 35 },
-                    { new Guid("a0403525-7041-4ad9-a8ab-29059ca44d07"), 31 },
-                    { new Guid("b1d195dc-6dfd-4725-9d70-6e13860cb813"), 32 }
+                    { new Guid("0ddac854-f77a-4d88-a1c3-90cac09406d7"), 38 },
+                    { new Guid("1ff28426-38f8-43d7-9b8f-0bbc91c3c15d"), 33 },
+                    { new Guid("241a88d4-3fcd-4915-afdb-8f9747f15277"), 34 },
+                    { new Guid("4872aa25-ae9a-4d95-b506-7fd6f6d9b177"), 30 },
+                    { new Guid("59caa319-0f00-4c4c-8748-8aaea82b4f80"), 35 },
+                    { new Guid("8399df5d-3ad1-40bd-b500-c6c4cffbf2b8"), 31 },
+                    { new Guid("9b9a343c-7039-4a47-aea3-61b1943146ad"), 37 },
+                    { new Guid("d2a41262-df58-420f-ab4a-79911de5b831"), 32 },
+                    { new Guid("db7dad26-3b8e-446a-b913-d7d3755f2b2a"), 36 },
+                    { new Guid("e49c6b04-e861-482d-b37e-e02c3d302b3e"), 39 }
                 });
 
             migrationBuilder.CreateIndex(
