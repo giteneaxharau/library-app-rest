@@ -8,7 +8,6 @@ public class BookCreateDTO
     public string Name { get; set; }
     [Required]
     public string Description { get; set; }
-    // public string Image { get; set; }
     [Required]
     public List<CategoriesBookDTO> Categories { get; set; } = new List<CategoriesBookDTO>();
 

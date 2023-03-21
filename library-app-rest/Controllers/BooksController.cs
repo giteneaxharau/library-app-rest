@@ -1,11 +1,15 @@
+using System.ComponentModel.DataAnnotations;
 using System.Net;
+using System.Runtime.CompilerServices;
 using System.Text.Json;
 using AutoMapper;
 using library_app_rest.Models;
 using library_app_rest.Models.DTO.BookDTO;
 using library_app_rest.Repository.IRepository;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using File = library_app_rest.Models.File;
 
 namespace library_app_rest.Controllers;
 
@@ -17,11 +21,13 @@ public class BooksController : ControllerBase
     protected Response _response;
     private readonly IBookRepository _dbBook;
     private readonly IMapper _mapper;
+    private readonly IFileService _fileService;
 
-    public BooksController(IBookRepository dbBook, IMapper mapper)
+    public BooksController(IBookRepository dbBook, IMapper mapper, IFileService fileService)
     {
         _dbBook = dbBook;
         _mapper = mapper;
+        _fileService = fileService;
         this._response = new();
     }
 
@@ -42,6 +48,7 @@ public class BooksController : ControllerBase
             }
 
             List<BookDTO> bookListDTO = _mapper.Map<List<BookDTO>>(bookList.ToList());
+            bookListDTO.ForEach(dto => dto.Images = GetImageUrl(dto.Id) );
             Pagination pagination = new Pagination() { PageNumber = pageNumber, PageSize = pageSize };
             Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(pagination));
             _response.Result = bookListDTO;
@@ -223,4 +230,48 @@ public class BooksController : ControllerBase
 
         return _response;
     }
+
+    [HttpPost("UploadImage")]
+    // [Authorize(Roles = "Admin,Author")]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status415UnsupportedMediaType)]
+    public async Task<ActionResult<Response>> UploadImage([FromForm] File file)
+    {
+        var uploadedFile = file.Image;
+        if(uploadedFile == null  || uploadedFile.Length == 0)
+        {
+            _response.IsSuccess = false;
+            _response.StatusCode = HttpStatusCode.BadRequest;
+            _response.ErrorMessages.Add("No files uploaded");
+            return _response;
+
+        }
+
+        var image = await _fileService.SaveFile(uploadedFile, file.Id);
+        if(image.Item1 == 0)
+        {
+            _response.IsSuccess = false;
+            _response.StatusCode = HttpStatusCode.BadRequest;
+            _response.ErrorMessages.Add(image.Item2);
+            return _response;
+        }
+
+        _response.StatusCode =HttpStatusCode.Created;
+        _response.Result = GetImageUrl(file.Id);
+        return _response;
+    }
+
+    [NonAction]
+    private List<string> GetImageUrl(Guid bookId)
+    {
+        List<string> images = new List<string>();
+        foreach (var filepath in _fileService.GetFileNames(bookId))
+        {
+            images.Add($"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}//images/{bookId.ToString()}/{filepath}");
+        }
+        return images ;
+    }
+    
 }
