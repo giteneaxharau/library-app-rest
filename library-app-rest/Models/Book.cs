@@ -18,7 +18,11 @@ public class Book
     public string Name { get; set; }
     [Required]
     public string Description { get; set; }
-    // public string Image { get; set; }
+    
+    
+    public Guid AuthorId { get; set; }
+    [ForeignKey("AuthorId")]
+    public Author Author { get; set; }
     public virtual ICollection<Category> Categories { get; set; }
 
 }

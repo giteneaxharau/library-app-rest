@@ -16,6 +16,7 @@ public class BookDTO
     public string Name { get; set; }
     [Required]
     public string Description { get; set; }
+    public AuthorBookDTO Author { get; set; }
     public List<string>? Images { get; set; }
     [Required]
     public List<CategoriesBookDTO> Categories { get; set; }

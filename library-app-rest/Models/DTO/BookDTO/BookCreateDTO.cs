@@ -9,6 +9,8 @@ public class BookCreateDTO
     [Required]
     public string Description { get; set; }
     [Required]
+    public Guid AuthorId { get; set; }
+    [Required]
     public List<CategoriesBookDTO> Categories { get; set; } = new List<CategoriesBookDTO>();
 
 }

@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 using System.Runtime.CompilerServices;
 using System.Text.Json;
@@ -6,6 +7,7 @@ using AutoMapper;
 using library_app_rest.Models;
 using library_app_rest.Models.DTO.BookDTO;
 using library_app_rest.Repository.IRepository;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -48,7 +50,7 @@ public class BooksController : ControllerBase
             }
 
             List<BookDTO> bookListDTO = _mapper.Map<List<BookDTO>>(bookList.ToList());
-            bookListDTO.ForEach(dto => dto.Images = GetImageUrl(dto.Id) );
+            bookListDTO.ForEach(dto => dto.Images = GetImageUrl(dto.Id));
             Pagination pagination = new Pagination() { PageNumber = pageNumber, PageSize = pageSize };
             Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(pagination));
             _response.Result = bookListDTO;
@@ -105,6 +107,10 @@ public class BooksController : ControllerBase
     {
         try
         {
+            var stream = await HttpContext.GetTokenAsync("Bearer", "access_token");
+            var handler = new JwtSecurityTokenHandler();
+            var jwtSecurityToken = handler.ReadJwtToken(stream);
+            var userName = jwtSecurityToken.Claims.FirstOrDefault(claim => claim.Type == "unique_name").Value;
             if (await _dbBook.Get(u => u.Name.ToLower() == book.Name.ToLower()) != null)
             {
                 ModelState.AddModelError("ExistingError", "Book already exists!");
@@ -114,6 +120,12 @@ public class BooksController : ControllerBase
             if (book.Categories == null)
             {
                 ModelState.AddModelError("CategoriesExisting", "This book must have at least one category!");
+                return BadRequest(ModelState);
+            }
+
+            if (book.AuthorId == null)
+            {
+                ModelState.AddModelError("AuthorExisting", "This book must have an author!");
                 return BadRequest(ModelState);
             }
 
@@ -136,7 +148,7 @@ public class BooksController : ControllerBase
             Book bookEntity = _mapper.Map<Book>(book);
             bookEntity.Id = Guid.NewGuid();
             bookEntity.CreatedAt = DateTime.Now;
-            bookEntity.CreatedBy = "Enea Xharau";
+            bookEntity.CreatedBy = userName;
             await _dbBook.Create(bookEntity);
             _response.Result = _mapper.Map<BookDTO>(bookEntity);
             return CreatedAtRoute("CreateBook", new { id = bookEntity.Id }, _response);
@@ -208,6 +220,12 @@ public class BooksController : ControllerBase
                 return BadRequest(_response);
             }
 
+            if (bookUpdate.AuthorId == null)
+            {
+                ModelState.AddModelError("AuthorExisting", "This book must have an author!");
+                return BadRequest(ModelState);
+            }
+
             if (!ModelState.IsValid)
             {
                 _response.IsSuccess = false;
@@ -240,17 +258,16 @@ public class BooksController : ControllerBase
     public async Task<ActionResult<Response>> UploadImage([FromForm] File file)
     {
         var uploadedFile = file.Image;
-        if(uploadedFile == null  || uploadedFile.Length == 0)
+        if (uploadedFile == null || uploadedFile.Length == 0)
         {
             _response.IsSuccess = false;
             _response.StatusCode = HttpStatusCode.BadRequest;
             _response.ErrorMessages.Add("No files uploaded");
             return _response;
-
         }
 
         var image = await _fileService.SaveFile(uploadedFile, file.Id);
-        if(image.Item1 == 0)
+        if (image.Item1 == 0)
         {
             _response.IsSuccess = false;
             _response.StatusCode = HttpStatusCode.BadRequest;
@@ -258,7 +275,7 @@ public class BooksController : ControllerBase
             return _response;
         }
 
-        _response.StatusCode =HttpStatusCode.Created;
+        _response.StatusCode = HttpStatusCode.Created;
         _response.Result = GetImageUrl(file.Id);
         return _response;
     }
@@ -269,9 +286,10 @@ public class BooksController : ControllerBase
         List<string> images = new List<string>();
         foreach (var filepath in _fileService.GetFileNames(bookId))
         {
-            images.Add($"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}//images/{bookId.ToString()}/{filepath}");
+            images.Add(
+                $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}//images/{bookId.ToString()}/{filepath}");
         }
-        return images ;
+
+        return images;
     }
-    
 }

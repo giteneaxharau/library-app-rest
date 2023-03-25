@@ -13,6 +13,7 @@ public class MappingHelper : Profile
     public MappingHelper()
     {
         //Book table mappers
+        CreateMap<AuthorBookDTO, Author>().ReverseMap();
         CreateMap<CategoriesBookDTO, Category>().ReverseMap();
         CreateMap<Book, BookDTO>().ReverseMap();
         CreateMap<BookCreateDTO, Book>().ReverseMap();
@@ -26,5 +27,10 @@ public class MappingHelper : Profile
 
         //User table mappers
         CreateMap<User, UserDTO>().ReverseMap();
+        
+        //Author table mappers
+        CreateMap<Author, AuthorDTO>().ReverseMap();
+        CreateMap<Author, AuthorCreateDTO>().ReverseMap();
+        CreateMap<Author, AuthorUpdateDTO>().ReverseMap();
     }
 }

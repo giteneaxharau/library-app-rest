@@ -3,7 +3,7 @@ using System.Net;
 using System.Text.Json;
 using AutoMapper;
 using library_app_rest.Models;
-using library_app_rest.Models.DTO.CategoryDTO;
+using library_app_rest.Models.DTO;
 using library_app_rest.Repository.IRepository;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
@@ -14,15 +14,15 @@ namespace library_app_rest.Controllers;
 [ApiController]
 [Route("api/v{version:apiVersion}/[controller]")]
 [ApiVersion("1.0")]
-public class CategoriesController : ControllerBase
+public class AuthorController : ControllerBase
 {
     protected Response _response;
-    private readonly ICategoryRepository _dbCategory;
+    private readonly IAuthorRepository _dbAuthor;
     private readonly IMapper _mapper;
 
-    public CategoriesController(ICategoryRepository dbCategory, IMapper mapper)
+    public AuthorController(IAuthorRepository dbAuthor, IMapper mapper, IFileService fileService)
     {
-        _dbCategory = dbCategory;
+        _dbAuthor = dbAuthor;
         _mapper = mapper;
         this._response = new();
     }
@@ -31,22 +31,22 @@ public class CategoriesController : ControllerBase
     [ResponseCache(CacheProfileName = "Default30")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<Response>> GetCategories([FromQuery] string? search, int pageSize = 0,
-        int pageNumber = 1, bool include = false)
+    public async Task<ActionResult<Response>> GetAuthors([FromQuery] string? search, [FromQuery] bool? include = false,
+        int pageSize = 0, int pageNumber = 1)
     {
         try
         {
-            IEnumerable<Category> categoriesList;
-            categoriesList = await _dbCategory.GetAll(pageSize: pageSize, pageNumber: pageNumber, include: include);
+            IEnumerable<Author> authorList;
+            authorList = await _dbAuthor.GetAll(pageSize: pageSize, pageNumber: pageNumber, include: include);
             if (!string.IsNullOrEmpty(search))
             {
-                categoriesList = categoriesList.Where(x => x.Name.ToLower().Contains(search.ToLower()));
+                authorList = authorList.Where(u => u.Name.ToLower().Contains(search.ToLower()));
             }
 
-            List<CategoryDTO> categories = _mapper.Map<List<CategoryDTO>>(categoriesList);
+            List<AuthorDTO> authorListDTO = _mapper.Map<List<AuthorDTO>>(authorList.ToList());
             Pagination pagination = new Pagination() { PageNumber = pageNumber, PageSize = pageSize };
             Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(pagination));
-            _response.Result = categories;
+            _response.Result = authorListDTO;
             return Ok(_response);
         }
         catch (Exception e)
@@ -59,43 +59,43 @@ public class CategoriesController : ControllerBase
         return _response;
     }
 
-    [HttpGet("{id:int}", Name = "GetCategory")]
+    [HttpGet("{id:guid}", Name = "GetAuthor")]
     [ResponseCache(CacheProfileName = "Default30")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<Response>> GetCategory(int id, [FromQuery] bool? include = false)
+    public async Task<ActionResult<Response>> GetAuthor(Guid id)
     {
         try
         {
-            var category = await _dbCategory.Get(u => u.Id == id, include: include);
-            if (category == null)
+            var author = await _dbAuthor.Get(u => u.Id == id);
+            if (author == null)
             {
                 _response.IsSuccess = false;
                 _response.StatusCode = HttpStatusCode.NotFound;
-                _response.ErrorMessages.Add($"Book with id {id} not found");
+                _response.ErrorMessages.Add($"Author with id {id} not found");
                 return NotFound(_response);
             }
 
-            _response.Result = _mapper.Map<CategoryDTO>(category);
+            _response.Result = _mapper.Map<AuthorDTO>(author);
             return Ok(_response);
         }
         catch (Exception e)
         {
             _response.IsSuccess = false;
-            _response.StatusCode = HttpStatusCode.InternalServerError;
             _response.ErrorMessages.Add(e.ToString());
         }
 
         return _response;
     }
-    [HttpPost(Name = "CreateCategory")]
+
+    [HttpPost(Name = "CreateAuthor")]
     [Authorize(Roles = "Admin")]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<Response>> CreateCategory([FromBody] CategoryCreateDTO categoryCreate)
+    public async Task<ActionResult<Response>> CreateAuthor([FromBody] AuthorCreateDTO author)
     {
         try
         {
@@ -103,16 +103,17 @@ public class CategoriesController : ControllerBase
             var handler = new JwtSecurityTokenHandler();
             var jwtSecurityToken = handler.ReadJwtToken(stream);
             var userName = jwtSecurityToken.Claims.FirstOrDefault(claim=>claim.Type == "unique_name").Value;
-            if (await _dbCategory.Get(u => u.Name.ToLower() == categoryCreate.Name.ToLower()) != null)
+            if (await _dbAuthor.Get(u => u.Name.ToLower() == author.Name.ToLower()) != null)
             {
-                ModelState.AddModelError("ExistingError", "Category already exists!");
+                ModelState.AddModelError("ExistingError", "Author already exists!");
                 return BadRequest(ModelState);
             }
-            if (categoryCreate == null)
+
+            if (author == null)
             {
                 _response.IsSuccess = false;
                 _response.StatusCode = HttpStatusCode.BadRequest;
-                _response.ErrorMessages.Add("Category object is null");
+                _response.ErrorMessages.Add("Author object is null");
                 return BadRequest(_response);
             }
 
@@ -124,12 +125,13 @@ public class CategoriesController : ControllerBase
                 return BadRequest(_response);
             }
 
-            Category categoryEntity = _mapper.Map<Category>(categoryCreate);
-            categoryEntity.CreatedAt = DateTime.Now;
-            categoryEntity.CreatedBy = userName;
-            await _dbCategory.Create(categoryEntity);
-            _response.Result = _mapper.Map<CategoryDTO>(categoryEntity);
-            return CreatedAtRoute("CreateBook", new { id = categoryEntity.Id }, _response);
+            Author authorEntity = _mapper.Map<Author>(author);
+            authorEntity.Id = Guid.NewGuid();
+            authorEntity.CreatedAt = DateTime.Now;
+            authorEntity.CreatedBy = userName;
+            await _dbAuthor.Create(authorEntity);
+            _response.Result = _mapper.Map<AuthorDTO>(authorEntity);
+            return CreatedAtRoute("CreateAuthor", new { id = "heheheheh"}, _response);
         }
         catch (Exception e)
         {
@@ -140,33 +142,34 @@ public class CategoriesController : ControllerBase
 
         return _response;
     }
-    
-    [HttpDelete("{id:int}", Name = "DeleteCategory")]
+
+    [HttpDelete("{id:guid}", Name = "DeleteAuthor")]
     [Authorize(Roles = "Admin")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<Response>> DeleteBook(int id)
+    public async Task<ActionResult<Response>> DeleteAuthor(Guid id)
     {
         try
         {
-            if (id == null || id == 0)
+            if (id == null || id == Guid.Empty)
             {
                 _response.IsSuccess = false;
                 _response.StatusCode = HttpStatusCode.BadRequest;
-                _response.ErrorMessages.Add("Category id is empty");
+                _response.ErrorMessages.Add("Author id is empty");
                 return BadRequest(_response);
             }
 
-            var category = await _dbCategory.Get(u => u.Id == id);
-            if (category == null)
+            var author = await _dbAuthor.Get(u => u.Id == id);
+            if (author == null)
             {
                 _response.IsSuccess = false;
                 _response.StatusCode = HttpStatusCode.NotFound;
-                _response.ErrorMessages.Add($"Category with id {id} not found");
+                _response.ErrorMessages.Add($"Author with id {id} not found");
                 return NotFound(_response);
             }
-            await _dbCategory.Remove(category);
+
+            await _dbAuthor.Remove(author);
             _response.StatusCode = HttpStatusCode.NoContent;
             return Ok(_response);
         }
@@ -179,21 +182,21 @@ public class CategoriesController : ControllerBase
 
         return _response;
     }
-    
-    [HttpPut("{id:int}", Name = "UpdateCategory")]
+
+    [HttpPut("{id:guid}", Name = "UpdateAuthor")]
     [Authorize(Roles = "Admin")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<Response>> UpdateBook(int id, [FromBody] CategoryUpdateDTO categoryUpdate)
+    public async Task<ActionResult<Response>> UpdateAuthor(Guid id, [FromBody] AuthorUpdateDTO authorUpdate)
     {
         try
         {
-            if (categoryUpdate.Id != id || categoryUpdate.Id == null || categoryUpdate.Id == 0)
+            if (authorUpdate.Id != id || authorUpdate.Id == null || authorUpdate.Id == Guid.Empty)
             {
                 _response.IsSuccess = false;
                 _response.StatusCode = HttpStatusCode.BadRequest;
-                _response.ErrorMessages.Add("Category id is not the same as the one in the body");
+                _response.ErrorMessages.Add("Author id is not the same as the one in the body");
                 return BadRequest(_response);
             }
 
@@ -205,8 +208,8 @@ public class CategoriesController : ControllerBase
                 return BadRequest(_response);
             }
 
-            var categoryEntity = _mapper.Map<Category>(categoryUpdate);
-            await _dbCategory.Update(categoryEntity);
+            var authorEntity = _mapper.Map<Author>(authorUpdate);
+            await _dbAuthor.Update(authorEntity);
             _response.StatusCode = HttpStatusCode.NoContent;
             return Ok(_response);
         }
