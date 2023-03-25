@@ -45,7 +45,7 @@ public class CategoryRepository : Repository<Category>, ICategoryRepository
             query = query.Where(filter);
         }
 
-        if (include == true) query = query.Include(x => x.Books);
+        if (include == true) query = query.Include(x => x.Books).ThenInclude(b=>b.Author);
         return await query.FirstOrDefaultAsync();
     }
     public new async Task Create(Category entity)
