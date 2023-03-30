@@ -14,13 +14,13 @@ namespace library_app_rest.Controllers;
 [ApiController]
 [Route("api/v{version:apiVersion}/[controller]")]
 [ApiVersion("1.0")]
-public class AuthorController : ControllerBase
+public class AuthorsController : ControllerBase
 {
     protected Response _response;
     private readonly IAuthorRepository _dbAuthor;
     private readonly IMapper _mapper;
 
-    public AuthorController(IAuthorRepository dbAuthor, IMapper mapper, IFileService fileService)
+    public AuthorsController(IAuthorRepository dbAuthor, IMapper mapper, IFileService fileService)
     {
         _dbAuthor = dbAuthor;
         _mapper = mapper;

@@ -21,6 +21,13 @@ public class FileService: IFileService
             {
                 System.IO.Directory.CreateDirectory(path);
             }
+            if(System.IO.Directory.GetFiles(path:path).Length > 0)
+            {
+                foreach (var f in System.IO.Directory.GetFiles(path))
+                {
+                    System.IO.File.Delete(f);
+                }
+            }
 
             // Check the allowed extenstions
             var ext = Path.GetExtension(file.FileName);

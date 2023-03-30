@@ -63,7 +63,7 @@ public class BooksController : ControllerBase
             _response.ErrorMessages.Add(e.ToString());
         }
 
-        return _response;
+        return StatusCode(StatusCodes.Status500InternalServerError, _response);
     }
 
     [HttpGet("{id:guid}", Name = "GetBook")]
@@ -95,7 +95,7 @@ public class BooksController : ControllerBase
             _response.ErrorMessages.Add(e.ToString());
         }
 
-        return _response;
+        return StatusCode(StatusCodes.Status500InternalServerError, _response);
     }
 
     [HttpPost(Name = "CreateBook")]
@@ -160,7 +160,7 @@ public class BooksController : ControllerBase
             _response.ErrorMessages.Add(e.ToString());
         }
 
-        return _response;
+        return StatusCode(StatusCodes.Status500InternalServerError, _response);
     }
 
     [HttpDelete("{id:guid}", Name = "DeleteBook")]
@@ -188,7 +188,7 @@ public class BooksController : ControllerBase
                 _response.ErrorMessages.Add($"Book with id {id} not found");
                 return NotFound(_response);
             }
-
+            _fileService.DeleteFile(_fileService.GetFileNames(book.Id).First());
             await _dbBook.Remove(book);
             _response.StatusCode = HttpStatusCode.NoContent;
             return Ok(_response);
@@ -200,14 +200,14 @@ public class BooksController : ControllerBase
             _response.ErrorMessages.Add(e.ToString());
         }
 
-        return _response;
+        return StatusCode(StatusCodes.Status500InternalServerError, _response);
     }
 
     [HttpPut("{id:guid}", Name = "UpdateBook")]
     [Authorize(Roles = "Admin")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<Response>> UpdateBook(Guid id, [FromBody] BookUpdateDTO bookUpdate)
     {
         try
@@ -233,10 +233,10 @@ public class BooksController : ControllerBase
                 _response.ErrorMessages.Add("Invalid model object");
                 return BadRequest(_response);
             }
-
             var bookEntity = _mapper.Map<Book>(bookUpdate);
-            await _dbBook.Update(bookEntity);
+            var book = await _dbBook.Update(bookEntity);
             _response.StatusCode = HttpStatusCode.NoContent;
+            _response.Result = _mapper.Map<BookDTO>(book);
             return Ok(_response);
         }
         catch (Exception e)
@@ -246,38 +246,49 @@ public class BooksController : ControllerBase
             _response.ErrorMessages.Add(e.ToString());
         }
 
-        return _response;
+        return StatusCode(StatusCodes.Status500InternalServerError, _response);
     }
 
     [HttpPost("UploadImage")]
-    // [Authorize(Roles = "Admin,Author")]
+    [Authorize(Roles = "Admin,Author")]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status415UnsupportedMediaType)]
     public async Task<ActionResult<Response>> UploadImage([FromForm] File file)
     {
-        var uploadedFile = file.Image;
-        if (uploadedFile == null || uploadedFile.Length == 0)
+        try
         {
-            _response.IsSuccess = false;
-            _response.StatusCode = HttpStatusCode.BadRequest;
-            _response.ErrorMessages.Add("No files uploaded");
+            var uploadedFile = file.Image;
+            if (uploadedFile == null || uploadedFile.Length == 0)
+            {
+                _response.IsSuccess = false;
+                _response.StatusCode = HttpStatusCode.BadRequest;
+                _response.ErrorMessages.Add("No files uploaded");
+                return _response;
+            }
+
+            var image = await _fileService.SaveFile(uploadedFile, file.Id);
+            if (image.Item1 == 0)
+            {
+                _response.IsSuccess = false;
+                _response.StatusCode = HttpStatusCode.BadRequest;
+                _response.ErrorMessages.Add(image.Item2);
+                return _response;
+            }
+            
+            _response.StatusCode = HttpStatusCode.Created;
+            _response.Result = GetImageUrl(file.Id);
             return _response;
         }
-
-        var image = await _fileService.SaveFile(uploadedFile, file.Id);
-        if (image.Item1 == 0)
+        catch (Exception e)
         {
             _response.IsSuccess = false;
-            _response.StatusCode = HttpStatusCode.BadRequest;
-            _response.ErrorMessages.Add(image.Item2);
-            return _response;
+            _response.StatusCode = HttpStatusCode.InternalServerError;
+            _response.ErrorMessages.Add(e.ToString());
         }
-
-        _response.StatusCode = HttpStatusCode.Created;
-        _response.Result = GetImageUrl(file.Id);
-        return _response;
+       
+        return StatusCode(StatusCodes.Status500InternalServerError, _response);
     }
 
     [NonAction]

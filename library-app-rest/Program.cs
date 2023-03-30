@@ -121,7 +121,7 @@ builder.Services.AddCors(options =>
     {
         policy
             .SetIsOriginAllowedToAllowWildcardSubdomains()
-            .WithOrigins("http://localhost:5173")
+            .WithOrigins(new[] { "http://localhost:5173", "http://localhost:5174", "https://library-app-frontend.vercel.app"})
             .AllowAnyMethod()
             .AllowAnyHeader()
             .AllowCredentials();

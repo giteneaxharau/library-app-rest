@@ -56,7 +56,7 @@ public class BookRepository : Repository<Book>, IBookRepository
     public new async Task Create(Book entity)
     {
         var selectedCategories = await _db.Categories.Where(x => entity.Categories.Contains(x)).ToListAsync();
-        var author = await _db.Authors.FirstOrDefaultAsync(a => a.Id == entity.Author.Id);
+        var author = await _db.Authors.FirstOrDefaultAsync(a => a.Id == entity.AuthorId);
         entity.Categories = selectedCategories;
         entity.AuthorId = author.Id;
         await _db.Books.AddAsync(entity);
@@ -70,14 +70,15 @@ public class BookRepository : Repository<Book>, IBookRepository
             .Include(b => b.Author)
             .FirstOrDefaultAsync(b => b.Id == entity.Id);
         var selectedCategories = await _db.Categories.Where(x => entity.Categories.Contains(x)).ToListAsync();
-        var author = await _db.Authors.FirstOrDefaultAsync(a => a.Id == entity.Author.Id);
+        var author = await _db.Authors.FirstAsync(a => a.Id == entity.AuthorId);
         book.Categories = selectedCategories;
+        book.Author = author;
         book.AuthorId = author.Id;
         book.Name = entity.Name;
         book.Description = entity.Description;
         book.UpdatedAt = DateTime.Now;
         _db.Books.Update(book);
         await _db.SaveChangesAsync();
-        return entity;
+        return book;
     }
 }
