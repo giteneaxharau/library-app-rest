@@ -9,4 +9,6 @@ public interface IUserRepository
     bool IsUniqueUser(string username);
     Task<LoginResponseDTO> Login(LoginRequestDTO loginRequestDto);
     Task<UserDTO> Register(RegisterRequestDTO registrationRequestDto);
+
+    Task<List<UserDTO>> GetAll(bool onlyAuthors = false);
 }

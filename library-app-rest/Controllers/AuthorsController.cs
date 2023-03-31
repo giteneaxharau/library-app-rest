@@ -18,12 +18,14 @@ public class AuthorsController : ControllerBase
 {
     protected Response _response;
     private readonly IAuthorRepository _dbAuthor;
+    private readonly IUserRepository _dbUser;
     private readonly IMapper _mapper;
 
-    public AuthorsController(IAuthorRepository dbAuthor, IMapper mapper, IFileService fileService)
+    public AuthorsController(IAuthorRepository dbAuthor, IMapper mapper, IFileService fileService, IUserRepository dbUser)
     {
         _dbAuthor = dbAuthor;
         _mapper = mapper;
+        _dbUser = dbUser;
         this._response = new();
     }
 
@@ -32,12 +34,12 @@ public class AuthorsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<Response>> GetAuthors([FromQuery] string? search, [FromQuery] bool? include = false,
-        int pageSize = 0, int pageNumber = 1)
+        int pageSize = 0, int pageNumber = 1, [FromQuery] bool? orderByBooks = false)
     {
         try
         {
             IEnumerable<Author> authorList;
-            authorList = await _dbAuthor.GetAll(pageSize: pageSize, pageNumber: pageNumber, include: include);
+            authorList = await _dbAuthor.GetAll(pageSize: pageSize, pageNumber: pageNumber, include: include, orderByBooks: orderByBooks);
             if (!string.IsNullOrEmpty(search))
             {
                 authorList = authorList.Where(u => u.Name.ToLower().Contains(search.ToLower()));
@@ -56,7 +58,7 @@ public class AuthorsController : ControllerBase
             _response.ErrorMessages.Add(e.ToString());
         }
 
-        return _response;
+        return StatusCode(StatusCodes.Status500InternalServerError,_response);
     }
 
     [HttpGet("{id:guid}", Name = "GetAuthor")]
@@ -87,7 +89,29 @@ public class AuthorsController : ControllerBase
             _response.ErrorMessages.Add(e.ToString());
         }
 
-        return _response;
+        return StatusCode(StatusCodes.Status500InternalServerError,_response);
+    }
+
+    [HttpGet("users", Name = "GetUserAuthors")]
+    [ResponseCache(CacheProfileName = "Default30")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<ActionResult<Response>> GetUserAuthors()
+    {
+        try
+        {
+            var users = await _dbUser.GetAll(true);
+            _response.Result = users;
+            return Ok(_response);
+        }
+        catch (Exception e)
+        {
+            _response.IsSuccess = false;
+            _response.StatusCode = HttpStatusCode.InternalServerError;
+            _response.ErrorMessages.Add(e.ToString());
+        }
+
+        return StatusCode(StatusCodes.Status500InternalServerError,_response);
     }
 
     [HttpPost(Name = "CreateAuthor")]
@@ -140,7 +164,7 @@ public class AuthorsController : ControllerBase
             _response.ErrorMessages.Add(e.ToString());
         }
 
-        return _response;
+        return StatusCode(StatusCodes.Status500InternalServerError,_response);
     }
 
     [HttpDelete("{id:guid}", Name = "DeleteAuthor")]
@@ -180,7 +204,7 @@ public class AuthorsController : ControllerBase
             _response.ErrorMessages.Add(e.ToString());
         }
 
-        return _response;
+        return StatusCode(StatusCodes.Status500InternalServerError,_response);
     }
 
     [HttpPut("{id:guid}", Name = "UpdateAuthor")]
@@ -208,7 +232,8 @@ public class AuthorsController : ControllerBase
                 return BadRequest(_response);
             }
 
-            var authorEntity = _mapper.Map<Author>(authorUpdate);
+            var authorEntity = await _dbAuthor.Get(u => u.Id == id);
+            
             await _dbAuthor.Update(authorEntity);
             _response.StatusCode = HttpStatusCode.NoContent;
             return Ok(_response);
@@ -220,6 +245,6 @@ public class AuthorsController : ControllerBase
             _response.ErrorMessages.Add(e.ToString());
         }
 
-        return _response;
+        return StatusCode(StatusCodes.Status500InternalServerError,_response);
     }
 }

@@ -56,7 +56,7 @@ public class CategoriesController : ControllerBase
             _response.ErrorMessages.Add(e.ToString());
         }
 
-        return _response;
+        return StatusCode(StatusCodes.Status500InternalServerError,_response);
     }
 
     [HttpGet("{id:int}", Name = "GetCategory")]
@@ -88,7 +88,7 @@ public class CategoriesController : ControllerBase
             _response.ErrorMessages.Add(e.ToString());
         }
 
-        return _response;
+        return StatusCode(StatusCodes.Status500InternalServerError,_response);
     }
     [HttpPost(Name = "CreateCategory")]
     [Authorize(Roles = "Admin")]
@@ -138,7 +138,7 @@ public class CategoriesController : ControllerBase
             _response.ErrorMessages.Add(e.ToString());
         }
 
-        return _response;
+        return StatusCode(StatusCodes.Status500InternalServerError,_response);
     }
     
     [HttpDelete("{id:int}", Name = "DeleteCategory")]
@@ -177,7 +177,7 @@ public class CategoriesController : ControllerBase
             _response.ErrorMessages.Add(e.ToString());
         }
 
-        return _response;
+        return StatusCode(StatusCodes.Status500InternalServerError,_response);
     }
     
     [HttpPut("{id:int}", Name = "UpdateCategory")]
@@ -217,6 +217,6 @@ public class CategoriesController : ControllerBase
             _response.ErrorMessages.Add(e.ToString());
         }
 
-        return _response;
+        return StatusCode(StatusCodes.Status500InternalServerError,_response);
     }
 }

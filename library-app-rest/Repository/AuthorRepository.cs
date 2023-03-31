@@ -16,7 +16,7 @@ public class AuthorRepository : Repository<Author>, IAuthorRepository
     }
 
     public new async Task<List<Author>> GetAll(Expression<Func<Author, bool>>? filter = null, int pageSize = 0,
-        int pageNumber = 1, bool? include = false)
+        int pageNumber = 1, bool? include = false, bool? orderByBooks = false)
     {
         IQueryable<Author> query = DbSet;
         if (filter != null)
@@ -31,6 +31,7 @@ public class AuthorRepository : Repository<Author>, IAuthorRepository
         }
 
         if (include == true) query = query.Include(x => x.Books).Include(x => x.User);
+        if (orderByBooks == true) query = query.OrderByDescending(x => x.Books.Count);
         return await query.ToListAsync();
     }
 
@@ -60,7 +61,11 @@ public class AuthorRepository : Repository<Author>, IAuthorRepository
 
     public async Task<Author> Update(Author entity)
     {
-        _db.Authors.Update(entity);
+        var author = await _db.Authors.FirstOrDefaultAsync(a => a.Id == entity.Id);
+        author.Name = entity.Name;
+        author.Bio = entity.Bio;
+        author.UserId = entity.UserId;
+        _db.Authors.Update(author);
         await _db.SaveChangesAsync();
         return entity;
     }

@@ -36,6 +36,12 @@ public class UserRepository : IUserRepository
         this.secretKey = configuration.GetValue<string>("ApiSettings:Secret");
     }
 
+    public async Task<List<UserDTO>> GetAll(bool onlyAuthors = false)
+    {
+        var users = await _userManager.GetUsersInRoleAsync(onlyAuthors ? "Author" : "Admin");
+        return _mapper.Map<List<UserDTO>>(users);
+    }
+
     public bool IsUniqueUser(string username)
     {
         User? user = _db.Users.FirstOrDefault(x => x.UserName == username);
