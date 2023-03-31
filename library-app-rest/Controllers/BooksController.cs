@@ -265,7 +265,7 @@ public class BooksController : ControllerBase
                 _response.IsSuccess = false;
                 _response.StatusCode = HttpStatusCode.BadRequest;
                 _response.ErrorMessages.Add("No files uploaded");
-                return _response;
+                return BadRequest(_response);
             }
 
             var image = await _fileService.SaveFile(uploadedFile, file.Id);
@@ -274,12 +274,12 @@ public class BooksController : ControllerBase
                 _response.IsSuccess = false;
                 _response.StatusCode = HttpStatusCode.BadRequest;
                 _response.ErrorMessages.Add(image.Item2);
-                return _response;
+                return StatusCode(StatusCodes.Status415UnsupportedMediaType, _response);
             }
             
             _response.StatusCode = HttpStatusCode.Created;
             _response.Result = GetImageUrl(file.Id);
-            return _response;
+            return Created("UploadImage", _response);
         }
         catch (Exception e)
         {

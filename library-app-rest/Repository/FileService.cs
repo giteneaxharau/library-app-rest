@@ -31,6 +31,7 @@ public class FileService: IFileService
 
             // Check the allowed extenstions
             var ext = Path.GetExtension(file.FileName);
+            if(string.IsNullOrEmpty(ext)) ext = new FileInfo(fileName: file.FileName).Extension;
             string[] allowedExtensions = { ".jpg", ".png", ".jpeg", ".gif" };
             if (!allowedExtensions.Contains(ext))
             {
