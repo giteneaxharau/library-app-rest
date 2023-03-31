@@ -298,7 +298,7 @@ public class BooksController : ControllerBase
         foreach (var filepath in _fileService.GetFileNames(bookId))
         {
             images.Add(
-                $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/{filepath}");
+                 $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/{filepath}");
         }
 
         return images;
