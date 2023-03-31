@@ -102,7 +102,7 @@ public class CategoriesController : ControllerBase
             var stream = await HttpContext.GetTokenAsync("Bearer", "access_token");
             var handler = new JwtSecurityTokenHandler();
             var jwtSecurityToken = handler.ReadJwtToken(stream);
-            var userName = jwtSecurityToken.Claims.FirstOrDefault(claim=>claim.Type == "unique_name").Value;
+            var userName = jwtSecurityToken.Claims.FirstOrDefault(claim=>claim.Type == "unique_name")?.Value;
             if (await _dbCategory.Get(u => u.Name.ToLower() == categoryCreate.Name.ToLower()) != null)
             {
                 ModelState.AddModelError("ExistingError", "Category already exists!");
@@ -126,7 +126,7 @@ public class CategoriesController : ControllerBase
 
             Category categoryEntity = _mapper.Map<Category>(categoryCreate);
             categoryEntity.CreatedAt = DateTime.Now;
-            categoryEntity.CreatedBy = userName;
+            categoryEntity.CreatedBy = userName ?? "Unknown";
             await _dbCategory.Create(categoryEntity);
             _response.Result = _mapper.Map<CategoryDTO>(categoryEntity);
             return CreatedAtRoute("CreateBook", new { id = categoryEntity.Id }, _response);
@@ -150,7 +150,7 @@ public class CategoriesController : ControllerBase
     {
         try
         {
-            if (id == null || id == 0)
+            if (id == 0)
             {
                 _response.IsSuccess = false;
                 _response.StatusCode = HttpStatusCode.BadRequest;
@@ -189,7 +189,7 @@ public class CategoriesController : ControllerBase
     {
         try
         {
-            if (categoryUpdate.Id != id || categoryUpdate.Id == null || categoryUpdate.Id == 0)
+            if (categoryUpdate.Id != id  || categoryUpdate.Id == 0)
             {
                 _response.IsSuccess = false;
                 _response.StatusCode = HttpStatusCode.BadRequest;
