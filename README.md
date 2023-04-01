@@ -12,23 +12,27 @@ To run the API, set the "LibraryApp.Api" project as the startup project and pres
 
 The API provides the following endpoints:
 
-- `GET /api/books`: Get a list of all books.
-- `GET /api/books/{id}`: Get a book by ID.
-- `POST /api/books`: Add a new book.
-- `PUT /api/books/{id}`: Update an existing book.
-- `DELETE /api/books/{id}`: Delete a book by ID.
-- `GET /api/authors`: Get a list of all authors.
-- `GET /api/authors/{id}`: Get an author by ID.
-- `POST /api/authors`: Add a new author.
-- `PUT /api/authors/{id}`: Update an existing author.
-- `DELETE /api/authors/{id}`: Delete an author by ID.
-- `GET /api/publishers`: Get a list of all publishers.
-- `GET /api/publishers/{id}`: Get a publisher by ID.
-- `POST /api/publishers`: Add a new publisher.
-- `PUT /api/publishers/{id}`: Update an existing publisher.
-- `DELETE /api/publishers/{id}`: Delete a publisher by ID.
+- `GET /api/v1/books`: Get a list of all books.
+- `GET /api/v1/books/{id}`: Get a book by ID.
+- `POST /api/v1/books`: Add a new book.
+- `PUT /api/v1/books/{id}`: Update an existing book.
+- `DELETE /api/v1/books/{id}`: Delete a book by ID.
+- `POST /api/v1/books/uploadimage`: Upload an image in 'multipart/form-data'
 
-All endpoints require authentication. Users must provide a valid JWT token in the `Authorization` header. To obtain a JWT token, send a POST request to `/api/auth/token` with a JSON body containing a valid username and password.
+- `GET /api/v1/authors`: Get a list of all authors.
+- `GET /api/v1/authors/{id}`: Get an author by ID.
+- `POST /api/v1/authors`: Add a new author.
+- `PUT /api/v1/authors/{id}`: Update an existing author.
+- `DELETE /api/v1/authors/{id}`: Delete an author by ID.
+- `GET /api/v1/authors/users`: Get all the users that have a role of Author
+
+- `GET /api/v1/categories`: Get a list of all categories.
+- `GET /api/v1/categories/{id}`: Get a publisher by ID.
+- `POST /api/v1/categories`: Add a new publisher.
+- `PUT /api/v1/categories/{id}`: Update an existing publisher.
+- `DELETE /api/v1/categories/{id}`: Delete a publisher by ID.
+
+PUT & POST endpoints require authentication. Users must provide a valid JWT token in the `Authorization` header. To obtain a JWT token, send a POST request to `/api/v1/userauth/login` with a JSON body containing a valid username and password.
 
 ## Contributing
 
