@@ -34,6 +34,18 @@ The API provides the following endpoints:
 
 PUT & POST endpoints require authentication. Users must provide a valid JWT token in the `Authorization` header. To obtain a JWT token, send a POST request to `/api/v1/userauth/login` with a JSON body containing a valid username and password.
 
+## Details
+
+The NuGet packages used in this are:
+
+- `AutoMapper 12.0.1`
+- `Bogus 34.0.2`
+- `Microsoft.EntityFrameworkCore 7.0.3`
+- `Microsoft.AspNetCore.Identity.EntityFrameworkCore 7.0.3`
+- `Microsoft.AspNetCore.Authentication.JwtBearer 7.0.3`
+- `Microsoft.AspNetCore.Mvc.NewtonsoftJson 7.0.3`
+- `Microsoft.AspNetCore.JsonPatch 7.0.3`
+
 ## Contributing
 
 Contributions are welcome! Please submit a pull request if you would like to contribute to this project.
